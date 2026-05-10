@@ -30,7 +30,8 @@ export const useProduct = (productId: string) => {
     fetchProduct();
   }, [productId]);
 
-  const handleSpecChange = useCallback((spec: Spec) => {
+  const handleSpecChange = useCallback((spec: any) => {
+    console.log('Selected spec:', spec)
     setSelectedSpec(spec);
     setQuantity(1);
   }, []);
@@ -41,7 +42,6 @@ export const useProduct = (productId: string) => {
 
   const handleAddToCart = useCallback(async () => {
     if (!selectedSpec) return;
-
     try {
       const cartItem: CartItem = {
         productId,
@@ -51,7 +51,9 @@ export const useProduct = (productId: string) => {
       };
 
       await ProductService.addToCart(cartItem);
-      setCartCount(prev => prev + quantity);
+      setCartCount(prev => {
+        return prev + quantity
+      });
 
       toast.success('已加入购物车');
     } catch (err) {
